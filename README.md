@@ -17,7 +17,8 @@ Dataset Info: https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicat
 Diabetes_Prediction/
 ├── python_code/
 ├── Rcode/
-├── report/     # files for report including Rmd and pdf
+├── report/             # files for report including Rmd and pdf
+├── convert2rmd.py      # convert .ipynb to .Rmd
 ├── README.md
 
 ```
