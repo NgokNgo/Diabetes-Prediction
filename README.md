@@ -19,6 +19,7 @@ Diabetes_Prediction/
 ├── Rcode/
 ├── report/             # files for report including Rmd and pdf
 ├── convert2rmd.py      # convert .ipynb to .Rmd
+├── Strategy.txt        # Strategy for building model 
 ├── README.md
 
 ```
