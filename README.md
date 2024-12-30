@@ -2,21 +2,23 @@ Dataset Info: https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicat
 
 ## Tasks 
 
-| Task | Status |
-|------|--------|
-| EDA | In Progress 75% |
-| Data Cleaning | Not Started |
-| Hypothesis Testing | Not Started |
-| Build Model | Not Started |
-| Evaluation | Not Started |
-| Report | Not Started |
+| Task | Status | Note |
+|------|--------|------|
+| EDA | In Progress 90% | Comment for plots |
+| Data Cleaning | In Progress 70% | Haven't check |
+| Hypothesis Testing | In Progress | Test for varibles relations |
+| Build Model | Not Started ||
+| Evaluation | Not Started ||
+| Report | Not Started ||
 
 ## Folder Structure
 
 ```
 Diabetes_Prediction/
+├── data/               # all csv files 
 ├── python_code/
 ├── Rcode/
+│   ├── EDA/
 ├── report/             # files for report including Rmd and pdf
 ├── convert2rmd.py      # convert .ipynb to .Rmd
 ├── Strategy.txt        # Strategy for building model 

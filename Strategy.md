@@ -23,7 +23,7 @@
 2. Kiểm định các giả thuyết để chọn biến: Chi-square, ANOVA, Kruskal-Wallis. 
 
 3. Xử lí mất cân bằng dữ liệu       
-    Nhóm có ít dữ liệu nhất là Pre-Diabetes chiếm ~2% nhưng có khoảng 2000 quan trắc.       
+    Nhóm có ít dữ liệu nhất là Pre-Diabetes chiếm ~2% nhưng có khoảng 4000 quan trắc.       
     Có thể dùng cả under-sampling, over-sampling và SMOTE. 
 
 4. Lựa chọn mô hình         
