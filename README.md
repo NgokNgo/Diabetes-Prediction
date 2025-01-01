@@ -6,9 +6,8 @@ Dataset Info: https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicat
 |------|--------|------|
 | EDA | In Progress 90% | Comment for plots |
 | Data Cleaning | In Progress 70% | Haven't check |
-| Hypothesis Testing | In Progress | Test for varibles relations |
-| Build Model | Not Started ||
-| Evaluation | Not Started ||
+| Hypothesis Testing | In Progress 85% | Comments |
+| Build Model & Evaluation | In Progress | Finetuning.. |
 | Report | Not Started ||
 
 ## Folder Structure
