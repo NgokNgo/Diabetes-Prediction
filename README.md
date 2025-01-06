@@ -4,17 +4,17 @@ Dataset Info: https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicat
 
 | Task | Status | Note |
 |------|--------|------|
-| EDA | In Progress 90% | Comment for plots |
-| Data Cleaning | In Progress 70% | Haven't check |
-| Hypothesis Testing | In Progress 85% | Comments |
-| Build Model & Evaluation | In Progress | Finetuning.. |
+| EDA | In Progress 95% | |
+| Data Cleaning | In Progress 80% | EDA after process imbalanced data |
+| Hypothesis Testing | In Progress 90% | |
+| Build Model & Evaluation | In Progress 80% | Add comments |
 | Report | Not Started ||
 
 ## Folder Structure
 
 ```
 Diabetes_Prediction/
-├── data/               # all csv files 
+├── data/            
 ├── python_code/
 ├── Rcode/
 │   ├── EDA/
