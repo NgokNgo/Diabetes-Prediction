@@ -24,14 +24,6 @@ sum(is.na(df))
 dữ liệu không có NaN
 
 ```{r}
-# Check for duplicated rows
-sum(duplicated(df))
-```
-
-dữ liệu có ~24000 dòng bị trùng nhau, chiếm khoảng 9.5% dữ liệu gốc     
-tuy nhiên dữ liệu không có id cho mỗi observation nên có thể xem mỗi observation là 1 cá thể riêng biệt và có thể có dữ liệu về tình trạng sức khỏe giống nhau. => có thể không cần thực hiện xóa dữ liệu trùng lặp
-
-```{r}
 # Count unique values in each column
 print(sapply(df, n_distinct))
 ```
@@ -41,6 +33,25 @@ các biến định tính không phải nhị phân bao gồm: Diabetes_012, Gen
 các biến định lượng:  
 - rời rạc: MentHlth, PhysHlth
 - liên tục: BMI (trong dataset này thì được biểu diễn rời rạc)
+
+```{r}
+# Check for duplicated rows
+sum(duplicated(df))
+```
+
+dữ liệu có ~24000 dòng bị trùng nhau, chiếm khoảng 9.5% dữ liệu gốc. Kiểm tra xem số dòng trùng nhau này rơi nhiều vào nhóm nào.
+
+```{r}
+print("Before removing duplicates:")
+print(with(df, table(Diabetes_012)))
+
+df1 <- distinct(df)
+
+print("After removing duplicates:")
+print(with(df1, table(Diabetes_012)))
+```
+
+Như vậy các dữ liệu trùng đa số rơi vào class 1, có thể thực hiện drop duplicate rows để giảm ảnh hưởng của các dữ liệu nhiễu trong class này với model.
 
 ### Phân phối của các biến
 

@@ -32,14 +32,6 @@ sum(is.na(df))
 dữ liệu không có NaN
 
 ```{r}
-# Check for duplicated rows
-sum(duplicated(df))
-```
-
-dữ liệu có ~24000 dòng bị trùng nhau, chiếm khoảng 9.5% dữ liệu gốc     
-tuy nhiên dữ liệu không có id cho mỗi observation nên có thể xem mỗi observation là 1 cá thể riêng biệt và có thể có dữ liệu về tình trạng sức khỏe giống nhau. => có thể không cần thực hiện xóa dữ liệu trùng lặp
-
-```{r}
 # Count unique values in each column
 print(sapply(df, n_distinct))
 ```
@@ -49,6 +41,25 @@ các biến định tính không phải nhị phân bao gồm: Diabetes_012, Gen
 các biến định lượng:  
 - rời rạc: MentHlth, PhysHlth
 - liên tục: BMI (trong dataset này thì được biểu diễn rời rạc)
+
+```{r}
+# Check for duplicated rows
+sum(duplicated(df))
+```
+
+dữ liệu có ~24000 dòng bị trùng nhau, chiếm khoảng 9.5% dữ liệu gốc. Kiểm tra xem số dòng trùng nhau này rơi nhiều vào nhóm nào.
+
+```{r}
+print("Before removing duplicates:")
+print(with(df, table(Diabetes_012)))
+
+df1 <- distinct(df)
+
+print("After removing duplicates:")
+print(with(df1, table(Diabetes_012)))
+```
+
+Như vậy các dữ liệu trùng đa số rơi vào class 1, có thể thực hiện drop duplicate rows để giảm ảnh hưởng của các dữ liệu nhiễu trong class này với model.
 
 ### Phân phối của các biến
 
@@ -550,7 +561,7 @@ ggplot(df, aes(x=as.factor(Education), fill=Education)) +
     theme_minimal() 
 ```
 
-Scale lại dữ liệu cho các biến định lượng để giảm ảnh hưởng của outliers. 
+Scale lại toàn bộ dữ liệu cho các biến định lượng để giảm ảnh hưởng của outliers trong quá trình kiểm định giả thuyết. 
 
 ```{r}
 robust_scaler <- function(x) {
@@ -563,7 +574,7 @@ robust_scaler <- function(x) {
   return(scaled_x)
 }
 
-df <- df %>%
+df1 <- df %>%
   mutate(BMI = robust_scaler(BMI)) %>%
   mutate(PhysHlth = robust_scaler(PhysHlth)) %>%
   mutate(MentHlth = robust_scaler(MentHlth))
@@ -572,49 +583,86 @@ df <- df %>%
 ```{r}
 # plot the distribution of BMI, PhysHlth, and MentHlth
 par(mfrow=c(3,1), bg='white')
-hist(df$MentHlth, breaks=31, col='green', main='MentHlth Histogram')
-hist(df$PhysHlth, breaks=31, col='blue', main='PhysHlth Histogram')
-hist(df$BMI, breaks=84, col='red', main='BMI Histogram')
+hist(df1$MentHlth, breaks=31, col='green', main='MentHlth Histogram')
+hist(df1$PhysHlth, breaks=31, col='blue', main='PhysHlth Histogram')
+hist(df1$BMI, breaks=84, col='red', main='BMI Histogram')
 ```
 
 ```{r}
-write.csv(df, '../data/clean_outliers.csv', row.names=FALSE)
+write.csv(df1, '../data/clean_outliers.csv', row.names=FALSE)
+```
+
+Drop duplicate rows và chia dữ liệu train test cho quá trình xây dựng mô hình 
+
+```{r}
+df2 <-  distinct(df)
+set.seed(345)
+train_index <- sample(1:nrow(df2), 0.7*nrow(df2))
+train <- df2[train_index,]
+test <- df2[-train_index,]
+```
+
+```{r}
+print("Train data:")
+print(with(train, table(Diabetes_012)))
+print("Test data:")
+print(with(test, table(Diabetes_012)))
+```
+
+```{r}
+train_summary <- train %>%
+    summarise(
+        IQR_BMI = IQR(BMI),
+        median_BMI = median(BMI),
+        IQR_MentHlth = IQR(MentHlth),
+        median_MentHlth = median(MentHlth),
+        IQR_PhysHlth = IQR(PhysHlth),
+        median_PhysHlth = median(PhysHlth)
+    ) %>%
+    pivot_longer(cols = everything(), names_to = "Metric", values_to = "Value") %>%
+    separate(Metric, into = c("Statistic", "Variable"), sep = "_") %>%
+    pivot_wider(names_from = Statistic, values_from = Value)
+
+print(train_summary)
+```
+
+```{r}
+write.csv(train_summary, file = "../data/scale_parameters.csv", row.names = FALSE)
+```
+
+```{r}
+robust_scaler2 <- function(x, IQR, median) {
+    scaled_x <- (x - median) / IQR
+    return(scaled_x)
+}
+```
+
+```{r}
+variables <- c("BMI", "MentHlth", "PhysHlth")
+for (var in variables) {
+    median_value <- train_summary %>% filter(Variable == var) %>% pull(median)
+    IQR_value <- train_summary %>% filter(Variable == var) %>% pull(IQR)
+    train[[var]] <- robust_scaler2(train[[var]], IQR_value, median_value)
+    test[[var]] <- robust_scaler2(test[[var]], IQR_value, median_value)
+}
+```
+
+```{r}
+par(mfrow=c(3,1), bg='white')
+hist(train$MentHlth, breaks=31, col='green', main='MentHlth Histogram')
+hist(train$PhysHlth, breaks=31, col='blue', main='PhysHlth Histogram')
+hist(train$BMI, breaks=84, col='red', main='BMI Histogram')
+```
+
+```{r}
+write.csv(train, '../data/train_set/train_base.csv', row.names=FALSE)
+write.csv(test, '../data/testset.csv', row.names=FALSE)
 ```
 
 ### Imbalanced 
 
 ```{r}
-df <- read.csv('../data/clean_outliers.csv')
-```
-
-```{r}
-# split the data into training and testing sets
-set.seed(345)
-train_index <- sample(1:nrow(df), 0.7*nrow(df))
-train <- df[train_index,]
-test <- df[-train_index,]
-```
-
-```{r}
-with(train, table(Diabetes_012))
-```
-
-kiểm tra số lượng các quan trắc duy nhất trong nhóm tiền tiểu đường 
-
-```{r}
-with(train %>% distinct(), table(Diabetes_012))
-```
-
-```{r}
-with(test, table(Diabetes_012))
-```
-
-```{r}
-write.csv(train, '../data/train_set/train_base.csv', row.names=FALSE)
-```
-
-```{r}
-write.csv(test, '../data/testset.csv', row.names=FALSE)
+train <- read.csv('../data/train_set/train_base.csv')
 ```
 
 Under Sampling 
