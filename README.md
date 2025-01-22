@@ -2,25 +2,24 @@ Dataset Info: https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicat
 
 ## Tasks 
 
-| Task | Status | Note |
+| Task in order | Status | Note |
 |------|--------|------|
 | EDA | Done | |
-| Data Cleaning | In Progress 90% | EDA after process imbalanced data |
+| Data Cleaning | Done | |
 | Hypothesis Testing | Done | |
-| Build Model & Evaluation | Done | XGBoost Overfitting |
-| Report | Not Started ||
+| Build Model & Evaluation | Done | |
+| Report | Done ||
 
 ## Folder Structure
 
 ```
 Diabetes_Prediction/
-├── data/            
-├── python_code/
+├── data/           
 ├── Rcode/
 │   ├── EDA/
-├── report/             # files for report 
-├── convert2rmd.py      # convert .ipynb to .Rmd
-├── Strategy.txt        # Strategy for building model 
+├── main.ipynb          
+├── convert2rmd.py      
+├── Strategy.md        # Strategy for processing data and building model 
 ├── README.md
 
 ```
