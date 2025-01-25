@@ -10,16 +10,10 @@ Dataset Info: https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicat
 | Build Model & Evaluation | Done | |
 | Report | Done ||
 
-## Folder Structure
+## Files description
+main.ipynb : for python code.       
+Strategy.md : My plan after completing the EDA part.
+Report.pdf : In case you need to know why I chose these methods to process dataset, but this file is incompleted.      
 
-```
-Diabetes_Prediction/
-├── data/           
-├── Rcode/
-│   ├── EDA/
-├── main.ipynb          
-├── convert2rmd.py      
-├── Strategy.md        # Strategy for processing data and building model 
-├── README.md
-
-```
+*Notes:* I mainly work with R for this project so there will be some mistake in python code. 
+Check report file to understand the whole game ! 
