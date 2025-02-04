@@ -15,5 +15,7 @@ Dataset Info: https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicat
 `Strategy.md` : My plan after completing the EDA part.    
 `Report.pdf` : In case you need to know why I chose these methods to process dataset, but this file is incompleted.      
 
-*Notes:* I mainly work with R for this project so there will be some mistake in python code. 
+*Notes:* 
+- I mainly work with R for this project so there will be some mistake in python code. 
 Check report file to understand the whole game ! 
+- pipeline is an extra work.
